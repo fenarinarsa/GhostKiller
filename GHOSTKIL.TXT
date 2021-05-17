@@ -1,0 +1,269 @@
+﻿
+                      *******************************
+                      *                             *
+                      *  GHOST KILLER  Version 1.0  *
+                      *                             *
+                      *******************************
+
+
+       L'ultime blaster contre le fantome le plus connu du monde ST
+
+   Ce programme est dédicacé à Phan de NGC, qui en fera certainement une
+                            bonne utilisation!
+ 
+
+                           (c)Rick ST, 05/07/93
+
+
+ Documentation
+ =============
+ 
+ o Présentation générale détaillée
+ ---------------------------------
+ 
+   Il était une fois... Ben euh, non, on va pas commencer comme ca, sinon
+ je sens qu'on va y etre pour la soirée. Alors tout d'abord pardon à mes
+ amis étrangers pour ne pas avoir écrit cette doc en Anglais, en Allemand,
+ en Suédois, en Russe et en Japonais, mais je n'ai pas vraiment le temps:
+ j'ai une démo sur le feu...
+ 
+   Bon, alors si vous etes comme moi, que vous en avez assez de vous taper
+ Ghost sur vos disquettes à chaque fois que vous allez chercher un nouveau
+ gfx chez votre graphiste, quand vous réussissez difficilement à vous
+ procurer le tout dernier sélecteur de fichier avec multi-directory
+ chez votre swappeur favori, si vous en avez marre (ou plutot l'habitude)
+ de faire du reverse mouse sur le bureau, de vous taper deux bombes à
+ chaque reset ou de passer 24,578% de votre temps sur votre antivirus
+ favori, ce programme est fait pour vous.
+
+   Mais que fait GhostKiller ? Eh bien, c'est juste un petit programme à
+ placer dans le dossier AUTO (de préférence), qui s'installe bien au
+ chaud dans la mémoire, en résident (c'est légal, oui oui), et qui
+ extermine Ghost sur toutes les disquettes que vous pourrez insérer dans
+ votre lecteur. Evidemment, si Ghost se trouve dans la mémoire quand il
+ s'installe, le pauvre subira les pires suplices avant de passer au
+ hachoir, entre le moteur du lecteur et la courroie de l'axe.
+ 
+   Pas de panique en ce qui concerne votre disque dur, GhostKiller n'y
+ modifiera meme pas le moindre bit. Mais un dysfonctionnement peux
+ toujours arriver après des manipulations plus ou moins douteuses en
+ mémoire, je ne peux rien contre le hasard. Donc si votre disque dur se
+ crashe lamentablement, je décline toute responsabilité quant aux
+ dégradations physiques ou logiques que pourrait engendrer l'utilisation
+ de ce programme (manquerait plus que ca, c'est en Domaine public, je
+ vais pas rembourser ceux qui crashent leurs disques durs sous prétexte
+ qu'ils utilisaient mon programme, eh faut pas déconner les mecs, quoi). 
+
+   Il existe également une option pour forcer GhostKiller à exterminer
+ le boot secteur, il faut utiliser certaines combinaisons de touches qui
+ sont marquées un tout petit peu plus bas. Mais là où c'est drole, c'est
+ que dans cette version ca marche pas, parce que il y a juste un petit
+ problème auquel je n'avais pas pensé. Donc ne vous étonnez pas de voir
+ "Can't install keyboard test" à chaque fois que vous lancerez cette
+ version, c'est normal, ca marche pas. Voilà. Et paf.
+
+   En ce qui concerne la vaccination, GhostKiller installe un excellent
+ vaccin, le "Degas boot loader 1.4", voir plus loin pour les fonctions
+ de ce sublissime boot, écrit par Rick ST, ce qui n'étonnera personne.
+   Ah, j'oubliais. GhostKiller prend moins de 3.5 Ko en mémoire, et le
+ ralentissement qui lui est du se sent à peine (c'est autant que Ghost, de
+ toute facon...), à moins que vous n'appuyez sur ESC pendant 35mn sur le
+ bureau.
+ 
+   Ce programme est en Domaine Public. Ca veut dire que vous etes libres
+ de le diffuser, et pour une fois que c'est légal, vous pourriez vous
+ remuer un peu le popotin, non? La seule chose obligée, parce que c'est
+ moi, l'auteur, le vrai, qui vous le demande, c'est de diffuser TOUT ce
+ que contient ce répertoire en meme temps, c'est à dire pas grand chose:
+            * GHOSTKIL.PRG
+            * GHOSTKIL.DOC
+ En ce qui concerne le téléchargement et les banques de Domaine Public,
+ la diffusion dans un magazine, etc (on peut toujours rever...), ca serait
+ cool si vous me préveniez avant, juste pour savoir si mon truc fait bien
+ son business.
+ 
+   Pour les dons, remerciements, glorifications, et accessoirement si
+ vous avez des problèmes (ahah!), vous pouvez toujours me contacter grace
+ aux moyens de communication modernes suivants, je répond toujours aux
+ lettres qu'on m'envoie! Et si ca ne vient pas de France (...), écrivez
+ en Anglais, j'aurai moins de difficultés. Accessoirement, vous pourrez
+ également écrire en Japonais, mais alors envoyez avec une ou deux OAV,
+ vous pouvez etre sur que ca nouera plus rapidement le contact...
+ 
+             Poste:           Rick ST
+                       **********************
+					    *******************
+                                      France
+                         
+             Minitel:   3615 RTEL / 3614 RTEL1 / 3614 RTEL2
+                        3615 TOON / 3614 PIXTEL*TOON
+                        3615 STMAG / 3615 GEN4 / 3614 G4*ST
+
+                                       Bal RICK ST
+
+   Ce qui suit est beaucoup plus technique, c'est en gros ce que je viens
+ de dire, mais en plus clair. Voilà...
+ 
+ o Installation
+ --------------
+
+   GhostKiller peut etre installé par simple copie sur n'importe quoi,
+ disquette, disque dur, etc. Il est conseillé de le mettre dans le dossier
+ AUTO pour éviter de morceler la mémoire (il reste résident, sauf dans le
+ cas où il est déjà installé). Sa place en AUTO importe donc peu.
+   L'installation et la détection de Ghost en mémoire se font automati-
+ quement au lancement du programme, que ce soit au boot ou non. Si
+ Ghost est en mémoire au moment de l'execution de GhostKiller, il sera
+ impitoyablement désactivé et désintégré. Si GhostKiller est déjà
+ installé, il s'autodétecte (protocole XBRA) et rend la main sans se
+ réinstaller une seconde fois.
+
+ o Vecteurs utilisés
+ -------------------
+
+   A chaque changement de disquette, le GEMDOS fait un appel à la fonction
+ GetBPB du BIOS, pour récupérer les paramètres du nouveau disk. C'est
+ en détournant le vecteur de cette fonction ($472) que Ghost se répand
+ sur vos disquettes... C'est aussi par ce vecteur que GhostKiller ira
+ vérifier chaque nouvelle disquette insérée dans l'un des deux lecteurs.
+ Pour ses tests clavier, GhostKiller utilise le premier vecteur libre
+ dans la queue VBL.
+ Le vecteur $472 est détourné en utilisant le protocole XBRA. L'identi-
+ ficateur utilisé est 'GKRS'.
+
+
+ o Analyse de la disquette
+ -------------------------
+
+   A chaque appel de GetBPB (fonction BIOS 7), GhostKiller rend compte de
+ son analyse par un ou plusieurs changement(s) de la couleur de fond.
+ Désolé pour les utilisateurs d'écrans monochrome...
+
+  Rien  => Boot exécutable mais ce n'est pas Ghost (ATTENTION, cela peut
+           etre un virus! GhostKiller ne limite sa recherche qu'à Ghost!)
+  Rouge => Ghost est présent sur la disquette, GhostKiller va faire une
+           tentative de vaccination
+  Bleu  => Erreur disque (si cette couleur apparait juste après le rouge,
+           enlever la protection disquette)
+  Vert  => Boot non exécutable
+
+   Si l'appel est effectué sur un lecteur différent de A ou B (disque dur,
+ cartouche, ramdisk, CD-Rom, etc.), GhostKiller n'effectuera aucune
+ opération.
+   Attention, GhostKiller ne vaccine automatiquement QUE si Ghost est
+ déjà présent sur la disquette. S'il vaccine automatiquement une disquette
+ qui ne fonctionnera plus par la suite (jeu du commerce, etc), n'ayez pas
+ de regrets: de toute facons, Ghost l'avait déjà infesté, et elle n'aurait
+ pas pu se lancer, meme avant la vaccination... Et la prochaine fois,
+ lisez la notice de votre jeu au chapitre "Avertissement sur les virus"!
+
+
+ o Commandes forcées
+ -------------------
+
+ ATTENTION - Option non disponible dans cette version - Wait and see!
+
+ L'analyse et le remplacement du boot secteur peuvent etre forcés en
+ utilisant les combinaisons de touches suivantes:
+
+  [Control]-[Shift droit]             => Test du boot sur lecteur courant
+  [Control]-[Alternate]-[Shift droit] => Vaccination sur lecteur courant
+
+ Dans le cas du test, une nouvelle couleur est utilisée:
+  Violet => Degas loader 1.4 présent sur la disquette
+ 
+   La vaccination forcée ne devrait -normalement- pas endommager de
+ disquette dont le boot est non-exécutable (vert). Ceci n'est pas tou-
+ jours vrai pour certains logiciels du commerce (protections). 
+ Si GhostKiller ne retourne aucune couleur, le boot est donc executable et
+ vous avez deux solutions:
+   1) Le boot est nécessaire pour le contenu de la disquette (jeu, démo)
+   2) Le boot est celui d'un autre antivirus ou d'un virus qui n'est pas
+      Ghost
+ Dans le doute, utilisez un antivirus qui saura vous fournir plus d'infor-
+ mations.
+ 
+ AVERTISSEMENT: Je décline toute responsabilité en ce qui concerne
+                l'effacement, accidentel ou non, d'un boot secteur
+                nécessaire au fonctionnement d'une disquette (ex: jeu
+                original). GhostKiller ne saurait remplacer un bon
+                antivirus! Si vous n'avez pas l'habitude de ce genre de
+                manipulations, évitez la commande de vaccination forcée!
+
+
+ o Vaccination
+ -------------
+
+   Le boot utilisé est le "Degas boot loader 1.4". Ce boot effectue les
+ opérations suivantes:
+  - Test de la configuration 2,5Mo sur STe et modification des configura-
+     tions mémoire en conséquence (puis Reset et relancement du boot).
+  - Chargement d'une image BOOT.PI? si celle-ci est présente dans le
+     répertoire racine de la disquette sur laquelle le système a
+     booté. (Basse résolution = BOOT.PI1, Moyenne = BOOT.PI2,
+     Haute = BOOT.PI3)
+   Le chargement de l'image ne s'effectue que lors d'un reset à froid
+ ou lors de la première mise sous tension du ST. Il peut etre empeché
+ en appuyant sur [Alternate].
+   Une fois affichée, l'image peut etre gardée à l'écran en appuyant sur
+ [Control]; la procédure de boot continuera dès que cette touche sera
+ relachée.
+
+
+ o Compatibilité
+ ---------------
+
+   A cause des changements de couleur, GhostKiller 1.0 n'est compatible
+ Falcon que dans les résolutions compatibles ST.
+   Degas boot loader 1.4 fonctionne sur Falcon si celui-ci boote en mode
+ basse résolution ST.
+
+   Lorsque le message de GhostKiller s'affiche, vous pouvez le lire en
+ toute tranquillité en appuyant sur [Control]... Relachez-le quand
+ vous aurez terminé!
+
+
+
+   Voilà. Bonne chasse et n'oubliez pas de me tenir au courant de la
+ propagation de ce Ghostbuster sur disk, et je pourrai peut-etre vous
+ proposer une nouvelle version!
+ 
+                                                           
+ 
+                                                        Rick [ST]
+
+
+
+
+
+ Informations techniques
+ =======================
+ 
+ GhostKiller 1.0
+ 
+     Vecteur détourné:        $472 (hdv_bpb)
+     Identificateur XBRA:     GKRS
+ 
+ Ghost
+ 
+     Adresse de relocation:   $140
+     Taille:                   430 octets
+     Vecteurs détournés:      $472 (hdv_bpb)   en $20E, sauvé en $2E2
+                              $42A (resvector) en $194, sauvé en $190
+ 
+
+ Aide mémoire
+ ============
+ 
+   Couleurs intervenant après une analyse ou un test forcé:
+   
+     Rien   => Boot exécutable
+     Vert   => Boot non exécutable
+     Violet => Degas loader 1.4 présent sur la disquette
+     Rouge  => Disquette infestée par Ghost, vaccination automatique
+     Bleu   => Erreur disque (disque protégé?)
+     
+   Commandes forcées:
+   
+     [Control]-[R Shift]             => Test du boot sur lecteur courant
+     [Control]-[Alternate]-[R Shift] => Vaccination sur lecteur courant
